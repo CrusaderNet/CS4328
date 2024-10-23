@@ -18,7 +18,7 @@ comm = MPI.COMM_WORLD
 rank = comm.Get_rank()
 size = comm.Get_size()
 
-N = 40  # Global matrix size (N x N)
+N = 20  # Global matrix size (N x N)
 assert N % size == 0, "Matrix size must be divisible by the number of processes."
 
 local_n = N // size  # Local block size
@@ -26,11 +26,15 @@ local_n = N // size  # Local block size
 A_local = np.random.random((local_n, N))  # Local matrix block
 x_local = np.random.random(local_n)       # Local vector part
 
-start_time = time.time()  # Start timer
+comm.Barrier() #sync processes
+
+start_time = MPI.Wtime()  # Start timer
 
 y_local = matvec(comm, A_local, x_local)  # Perform matrix-vector product
 
-end_time = time.time()  # Stop timer
+comm.Barrier() #sync processes
+
+end_time = MPI.Wtime()  # Stop timer
 
 # Gather results on the root process
 y_global = None
@@ -47,3 +51,11 @@ if rank == 0:
     print("\nResult vector y (global):")
     print(y_global.reshape((N // size, size)))
     print(f"\nExecution time: {end_time - start_time:.10f} seconds")
+
+##CODE EXECUTION TIMES##
+##Processes: 1 --> 0.0000437000s##
+##Processes: 2 --> 0.0000799000s##
+##Processes: 4 --> 0.0000649000s##
+##Processes: 5 --> 0.0001804000s##
+##Processes: 10 --> 0.0003257000s##
+##Processes: 20 --> 0.0005672999s##
