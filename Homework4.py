@@ -52,7 +52,7 @@ yTest = comm.bcast(yTest, root=0)
 models = [
     (LogisticRegression(), "Logistic Regression"),
     (DecisionTreeClassifier(), "Decision Tree"),
-    (svm.SVC(kernel='rbf'), "SVC (RBF Kernel)"),
+    (svm.SVC(kernel='linear'), "SVC (Linear Kernel)"),
     (RandomForestClassifier(), "Random Forest")
 ]
 
