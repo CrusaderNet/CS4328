@@ -102,7 +102,11 @@ numba_execution_time = numba_End_Time - numba_Start_Time
 non_numba_precise = find_precision(non_numba_execution_time)
 numba_precise = find_precision(numba_execution_time)
 
-# Plot the bifurcation diagrams
+# Calculate speedup
+speedup = non_numba_execution_time / numba_execution_time
+speedup_text = f"Speedup (Non-Numba / Numba): {speedup:.2f}x"
+
+# Create the plots
 plt.style.use('seaborn-v0_8-whitegrid')
 fig, axes = plt.subplots(1, 2, figsize=(20, 8), facecolor='lightgray')
 
@@ -122,7 +126,10 @@ axes[1].set_title(f'Non-Numba Version\nBifurcation Diagram\n\n2.0 < R < 4.0  |  
 non_numba_text = f"Non-Numba time: {non_numba_precise} seconds"
 axes[1].text(2.5, 0.9, non_numba_text, fontsize=12, color='blue', bbox=dict(facecolor='white', alpha=0.5))
 
+# Add speedup annotation below the plots
+fig.text(0.5, 0.01, speedup_text, ha='center', fontsize=14, color='green', bbox=dict(facecolor='white', alpha=0.8))
+
 # Adjust layout and save
-plt.tight_layout()
-plt.savefig('bifurcation_diagrams_comparison.png')
+plt.tight_layout(rect=[0, 0.05, 1, 1])  # Leave space at the bottom for the speedup annotation
+plt.savefig('bifurcation_diagrams_with_speedup.png')
 plt.show()
