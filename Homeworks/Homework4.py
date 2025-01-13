@@ -29,7 +29,7 @@ size = comm.size
 # Check for exactly 5 processes
 if size != 4:
     if rank == 0:
-        print("This code requires exactly 5 processes.")
+        print("This code requires exactly 4 processes.")
     MPI.Finalize()
     exit()
 
